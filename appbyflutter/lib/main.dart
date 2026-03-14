@@ -8,7 +8,7 @@ import 'package:quickpass_yidun_flutter/quickpass_yidun_flutter.dart';
 
 
 void main() => runApp(new MaterialApp(
-      title: "易盾号码认证Demo",
+      title: "木兰App",
       theme: new ThemeData(primaryColor: Colors.white),
       home: MyApp(),
     ));
