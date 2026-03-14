@@ -5,6 +5,22 @@ allprojects {
     }
 }
 
+// 排除旧的 Support Library，避免与 AndroidX 重复类（Jetifier 在 Java 24 下不可用）
+subprojects {
+    project.configurations.all { config ->
+        config.exclude group: "com.android.support"
+    }
+}
+
+// 为所有 Android 子项目（含 Flutter 插件）添加 AppCompat，解决插件内 Theme.AppCompat.Light.NoActionBar 找不到
+subprojects {
+    project.afterEvaluate {
+        if (project.plugins.hasPlugin("com.android.library") || project.plugins.hasPlugin("com.android.application")) {
+            project.dependencies.add("api", "androidx.appcompat:appcompat:1.7.0")
+        }
+    }
+}
+
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
