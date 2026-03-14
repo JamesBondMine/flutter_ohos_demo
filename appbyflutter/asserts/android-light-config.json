@@ -67,7 +67,7 @@
   "privacyDialogProtocolColor": "#B35AFF",
   "protocolNavTitle": "移动协议详情，联通协议详情，电信协议详情",
   "privacyDialogContentEnd": ",并授权等爱获得本机号码。未注册的手机号验证通过后将自动完成注册。",
-  "backgroundVideo": "https://www.w3schools.com/html/movie.mp4",
+  "backgroundVideo": "",
   "backgroundVideoImage": "bg_1080",
   "widgets": [
     {
@@ -80,11 +80,11 @@
       "right": 12,
       "centerHorizontal": true,
       "isGravityCenter": true,
-      "text": "清空缓存",
+      "text": "手机号验证码登录",
       "fontDp": 14,
       "textColor": "#333333",
       "clickable": true,
-      "backgroundColor": "#ffff00",
+      "backgroundColor": "#008080",
       "action": "otherLogin"
     },
     {

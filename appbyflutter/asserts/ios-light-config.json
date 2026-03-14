@@ -190,9 +190,9 @@
 		{
 			"type": "UILabel",
 			"textColor": "#000000",
-			"font": 35,
+			"font": 15,
 			"action": "handleCustomLabel",
-			"text": "其他登录方式",
+			"text": "手机号验证码登录",
 			"backgroundColor":"#FFFFFF",
 			"textAlignment": 1,
 			"frame": {"mainScreenCenterXWithLeftDistance":0,"mainScreenTopDistance":310,"width":200,"height":32}
