@@ -13,6 +13,8 @@ class DisplayModeController extends GetxController {
     _loadFromStorage();
   }
 
+  static DisplayModeController get to => Get.put(DisplayModeController());
+
   final Rx<DisplayMode> mode = DisplayMode.normal.obs;
 
   /// 是否已做过「普通/长辈模式」选择（首次启动未选则为 false）

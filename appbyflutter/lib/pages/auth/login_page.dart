@@ -1,4 +1,6 @@
 import 'package:appbyflutter/controllers/auth_controller.dart';
+import 'package:appbyflutter/controllers/display_mode_controller.dart';
+import 'package:appbyflutter/core/theme/display_mode.dart';
 import 'package:appbyflutter/core/utils/gbs_color.dart';
 import 'package:flutter/material.dart';
 import 'package:appbyflutter/widgets/common_back_button.dart';
@@ -18,6 +20,9 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _agreeProtocol = false;
 
+    double get _scale => DisplayModeController.to.textScaleFactor;
+
+
   @override
   void dispose() {
     _phoneController.dispose();
@@ -32,6 +37,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+    final scale = _scale;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -56,10 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(height: 40),
-              // Expanded(
-              //     child:
                    Column (
-                // padding: EdgeInsets.all(0),
                 children: [
                   _buildInput(),
                 ],
@@ -72,6 +77,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+    });
+    
   }
 
   // 账号部分
@@ -159,6 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() {
                     _agreeProtocol = !_agreeProtocol;
                   });
+                  DisplayModeController.to.selectAndConfirm(_agreeProtocol ? DisplayMode.normal : DisplayMode.elder);
                 },
                 child: Padding(
                   padding: EdgeInsetsGeometry.only(top: 3, right: 8, left: 24),
