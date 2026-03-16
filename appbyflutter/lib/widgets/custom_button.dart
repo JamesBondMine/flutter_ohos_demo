@@ -7,43 +7,43 @@ import 'package:appbyflutter/core/utils/gbs_color.dart';
 class CustomButton extends StatelessWidget {
   /// 按钮文本
   final String text;
-  
+
   /// 点击回调
   final VoidCallback? onPressed;
-  
+
   /// 是否启用（默认false，灰色不可点击）
   final bool enabled;
-  
+
   /// 是否加载中
   final bool isLoading;
-  
+
   /// 按钮宽度（默认全宽）
   final double? width;
-  
+
   /// 按钮高度（默认50）
   final double height;
-  
+
   /// 背景颜色（启用状态）
   final Color? backgroundColor;
-  
+
   /// 文字颜色（启用状态）
   final Color? textColor;
-  
+
   /// 禁用背景颜色
   final Color? disabledBackgroundColor;
-  
+
   /// 禁用文字颜色
   final Color? disabledTextColor;
-  
+
   /// 圆角半径（默认12）
   final double borderRadius;
-  
+
   /// 字体大小（默认16）
   final double fontSize;
-  
+
   /// 字体粗细（默认bold）
   final FontWeight fontWeight;
-  
+
   /// 阴影高度（默认2）
   final double elevation;
 
@@ -67,20 +67,18 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     // 确定是否可点击：启用且不在加载中
     final canPress = enabled && !isLoading;
-    
+
     // 背景颜色：启用时使用传入的颜色或默认蓝色，禁用时使用灰色
     final bgColor = canPress
-        ? (backgroundColor ?? GbsColors.getPrimaryButton(isDark))
-        : (disabledBackgroundColor ?? GbsColors.getDisabled(isDark));
-    
+        ? (backgroundColor ?? GbsColors.primaryColor)
+        : (disabledBackgroundColor ?? GbsColors.primaryColor.withAlpha(127));
+
     // 文字颜色：启用时使用传入的颜色或默认白色，禁用时使用灰色文字
     final txtColor = canPress
-        ? (textColor ?? GbsColors.getButtonTextPrimary(isDark))
-        : (disabledTextColor ?? GbsColors.getBackgroundPrimary(isDark));
+        ? (textColor ?? GbsColors.textColorf)
+        : (disabledTextColor ?? GbsColors.textColorf);
 
     return SizedBox(
       width: width ?? double.infinity,
