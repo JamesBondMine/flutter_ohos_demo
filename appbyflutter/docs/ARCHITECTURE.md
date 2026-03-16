@@ -11,26 +11,31 @@ lib/
 ├── main.dart                 # 应用入口：GetStorage 初始化 + runApp(App())
 ├── app.dart                  # GetMaterialApp + 主题 + 普通/长辈模式（字体缩放）
 │
+├── controllers/              # 所有 GetX Controller（全局/页面级）
+│   ├── auth_controller.dart
+│   └── display_mode_controller.dart
+│
+├── models/                   # 所有数据模型（接口 DTO、实体等）
+│   └── user_model.dart
+│
 ├── core/                     # 核心层：与业务无关的公共能力
 │   ├── config/               # 环境与配置
 │   ├── constants/            # 常量、枚举
-│   ├── auth/                 # 全局登录状态（AuthController）
-│   ├── theme/                # 主题、颜色、字体、显示模式（普通/长辈）
-│   │   ├── app_theme.dart
-│   │   ├── display_mode.dart
-│   │   └── display_mode_controller.dart  # GetX 全局控制器
+│   ├── theme/                # 主题、颜色、字体、显示模式枚举（display_mode.dart）
+│   ├── network/              # 网络封装、ApiResponse
 │   ├── router/               # 路由与命名路由
 │   ├── utils/                # 工具函数
 │   └── extensions/           # Dart 扩展方法
 │
-├── features/                 # 功能层：按业务模块划分
-│   ├── auth/                 # 登录/鉴权（一键登录、手机号验证码登录）
-│   │   ├── data/             # 数据源、DTO、Repository 实现
-│   │   ├── domain/           # 用例、实体、Repository 抽象（可选）
-│   │   ├── presentation/     # 页面、GetX Controller（按需）
-│   │   └── auth_routes.dart  # 本模块路由
-│   └── home/                 # 首页（示例，后续按需添加）
-│       └── ...
+├── features/                 # 功能层：按模块划分，每模块下为 pages/
+│   ├── auth/                 # 登录/鉴权模块
+│   │   ├── pages/            # 本模块页面
+│   │   │   ├── login_page.dart
+│   │   │   └── display_mode_selection_page.dart
+│   │   └── data/             # 本模块接口、Repository（如 user_api.dart）
+│   └── home/
+│       └── pages/
+│           └── home_page.dart
 │
 └── shared/                   # 共享层：跨功能复用的 UI 与能力
     ├── widgets/              # 通用组件（CustomButton、DisplayModeSwitch 等）
@@ -53,7 +58,7 @@ lib/
 
 - **config**：环境（dev/staging/prod）、API 基地址、易盾等第三方 AppKey 配置。
 - **constants**：字符串常量、魔法数字、通用 key（如 `success`）。
-- **theme**：`ThemeData`、主色、圆角、间距等设计 token；**DisplayMode**（普通/长辈）与 **DisplayModeController**（GetX，持久化字体缩放）。
+- **theme**：`ThemeData`、主色、圆角、间距等设计 token；**DisplayMode** 枚举（普通/长辈）在 `core/theme/display_mode.dart`；Controller 统一在 **controllers/**。
 - **router**：路由表、命名路由、未登录拦截、深链。
 - **utils**：格式化、校验（手机号、验证码）、日期、安全存储等。
 - **extensions**：如 `StringExtension`、`BuildContextExtension`（navigate、theme）等。

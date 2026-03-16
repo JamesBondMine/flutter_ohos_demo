@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:appbyflutter/core/theme/display_mode.dart';
-import 'package:appbyflutter/core/theme/display_mode_controller.dart';
+import 'package:appbyflutter/controllers/display_mode_controller.dart';
 
 /// 普通/长辈模式切换组件，可用于设置页、个人中心
 /// 使用：DisplayModeSwitch()

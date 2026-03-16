@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:appbyflutter/core/auth/auth_controller.dart';
+import 'package:appbyflutter/controllers/auth_controller.dart';
 
 /// 即时通讯首页（占位，后续接入会话列表等）
 class HomePage extends StatelessWidget {

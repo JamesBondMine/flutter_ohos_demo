@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:appbyflutter/controllers/display_mode_controller.dart';
 import 'package:appbyflutter/core/theme/display_mode.dart';
-import 'package:appbyflutter/core/theme/display_mode_controller.dart';
 
 /// 首次启动（或未选过模式）时的「普通模式 / 长辈模式」选择页
 /// 选择后进入登录页或首页（由登录状态决定）

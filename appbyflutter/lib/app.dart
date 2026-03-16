@@ -1,13 +1,13 @@
+import 'package:appbyflutter/pages/auth/login_page.dart';
+import 'package:appbyflutter/pages/auth/display_mode_selection_page.dart';
+import 'package:appbyflutter/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:appbyflutter/core/auth/auth_controller.dart';
+import 'package:appbyflutter/controllers/auth_controller.dart';
+import 'package:appbyflutter/controllers/display_mode_controller.dart';
 import 'package:appbyflutter/core/constants/app_constants.dart';
 import 'package:appbyflutter/core/theme/app_theme.dart';
-import 'package:appbyflutter/core/theme/display_mode_controller.dart';
-import 'package:appbyflutter/features/auth/presentation/display_mode_selection_page.dart';
-import 'package:appbyflutter/features/auth/presentation/login_page.dart';
-import 'package:appbyflutter/features/home/presentation/home_page.dart';
 
 /// 应用根 Widget：GetX + 主题 + 普通/长辈模式（字体缩放）
 class App extends StatelessWidget {

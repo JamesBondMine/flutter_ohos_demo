@@ -2,17 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:appbyflutter/core/network/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:quickpass_yidun_flutter/quickpass_yidun_flutter.dart';
 
-import 'package:appbyflutter/core/auth/auth_controller.dart';
+import 'package:appbyflutter/controllers/auth_controller.dart';
 import 'package:appbyflutter/core/config/app_config.dart';
 import 'package:appbyflutter/core/constants/app_constants.dart';
-import 'package:appbyflutter/features/auth/data/models/user_model.dart';
-import 'package:appbyflutter/features/auth/data/user_api.dart';
-import 'package:appbyflutter/shared/widgets/custom_button.dart';
+import 'package:appbyflutter/models/user_model.dart';
+import 'package:appbyflutter/widgets/custom_button.dart';
 import 'package:get/get.dart';
 
 /// 登录页：一键登录 + 手机号验证码登录

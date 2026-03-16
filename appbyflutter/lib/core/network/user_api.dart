@@ -1,6 +1,6 @@
 import 'package:appbyflutter/core/config/app_config.dart';
 import 'package:appbyflutter/core/network/api_response.dart';
-import 'package:appbyflutter/features/auth/data/models/user_model.dart';
+import 'package:appbyflutter/models/user_model.dart';
 
 /// 用户相关接口（示例：用户列表）
 class UserApi {
