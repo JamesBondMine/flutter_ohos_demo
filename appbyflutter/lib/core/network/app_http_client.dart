@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer' as developer;
 
 import 'package:appbyflutter/core/network/api_response.dart';
+import 'package:flutter/foundation.dart';
 
 /// 基于 dart:io HttpClient 的封装，不依赖 dio 等第三方库
 /// 提供 GET / POST / DELETE / upload / download，统一使用 [ApiResponse] 接收返回
@@ -22,12 +24,27 @@ class AppHttpClient {
     return client;
   }
 
+  void _logRequest(
+    String method,
+    Uri uri, {
+    int? statusCode,
+    Duration? duration,
+  }) {
+    final statusPart = statusCode != null ? ' => $statusCode' : '';
+    final durationPart =
+        duration != null ? ' (${duration.inMilliseconds}ms)' : '';
+    if (kDebugMode) {
+      print('[HTTP] $method $uri$statusPart$durationPart');
+    }
+  }
+
   Uri _uri(String path, [Map<String, String>? queryParameters]) {
     final base = Uri.parse(baseUrl);
     final normalizedPath = path.startsWith('/') ? path.substring(1) : path;
     final combinedPath = base.path.isEmpty
         ? normalizedPath
-        : (base.path.endsWith('/') ? base.path : '${base.path}/') + normalizedPath;
+        : (base.path.endsWith('/') ? base.path : '${base.path}/') +
+            normalizedPath;
     var uri = base.replace(path: combinedPath);
     if (queryParameters != null && queryParameters.isNotEmpty) {
       uri = uri.replace(
@@ -105,8 +122,10 @@ class AppHttpClient {
     T Function(dynamic)? fromJsonData,
   }) async {
     final client = _createClient();
+    final sw = Stopwatch()..start();
     try {
-      final request = await client.postUrl(_uri(path, queryParameters));
+      final uri = _uri(path, queryParameters);
+      final request = await client.postUrl(uri);
       _headers(headers).forEach((k, v) => request.headers.set(k, v));
       request.headers.set('Content-Type', 'application/json; charset=utf-8');
       request.headers.set('Accept', 'application/json');
@@ -122,10 +141,25 @@ class AppHttpClient {
         <int>[],
         (acc, chunk) => acc..addAll(chunk),
       );
+
+      // 打印 POST 请求的完整响应内容，便于调试
+      final responseBody = utf8.decode(bodyBytes);
+      print('==== HTTP POST $uri ====');
+      print('Status: ${response.statusCode}');
+      print('Response: $responseBody');
+      print('=========================================');
+
+      sw.stop();
+      _logRequest(
+        'POST',
+        uri,
+        statusCode: response.statusCode,
+        duration: sw.elapsed,
+      );
       if (response.statusCode >= 400) {
         return ApiResponse<T>(
           code: response.statusCode,
-          msg: utf8.decode(bodyBytes),
+          msg: responseBody,
           data: null,
         );
       }
@@ -229,8 +263,7 @@ class AppHttpClient {
       if (extraFields != null) {
         for (final e in extraFields.entries) {
           buffer.writeln('--$boundary');
-          buffer.writeln(
-              'Content-Disposition: form-data; name="${e.key}"');
+          buffer.writeln('Content-Disposition: form-data; name="${e.key}"');
           buffer.writeln();
           buffer.writeln(e.value);
         }
