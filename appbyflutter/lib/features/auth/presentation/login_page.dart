@@ -10,6 +10,8 @@ import 'package:quickpass_yidun_flutter/quickpass_yidun_flutter.dart';
 import 'package:appbyflutter/core/auth/auth_controller.dart';
 import 'package:appbyflutter/core/config/app_config.dart';
 import 'package:appbyflutter/core/constants/app_constants.dart';
+import 'package:appbyflutter/features/auth/data/models/user_model.dart';
+import 'package:appbyflutter/features/auth/data/user_api.dart';
 import 'package:appbyflutter/shared/widgets/custom_button.dart';
 import 'package:get/get.dart';
 
@@ -29,6 +31,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _usePhoneLogin = false;
   int _countdown = 0;
   Timer? _countdownTimer;
+
+  /// 用户列表接口返回结果（示例网络请求）
+  UserListResult? _userListResult;
 
   final QuickpassFlutterPlugin quickLoginPlugin = QuickpassFlutterPlugin();
   final _eventChannel =
@@ -115,11 +120,13 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Container(
             margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(12),
             color: Colors.white,
-            width: 300,
-            height: 100,
+            width: double.infinity,
+            constraints: const BoxConstraints(minHeight: 80),
             child: Text(_result),
           ),
+         
           TextField(
             keyboardType: TextInputType.phone,
             maxLines: 1,
@@ -151,6 +158,80 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildUserListSection() {
+    final result = _userListResult!;
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '用户列表（共 ${result.totalElements} 人，当前页 ${result.users.length} 条）',
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...result.users.take(5).map(
+                (u) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    '${u.username}${u.nickname != null && u.nickname!.isNotEmpty ? " (${u.nickname})" : ""}',
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+              ),
+          if (result.users.length > 5)
+            Text(
+              '... 等共 ${result.users.length} 条',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// 调用用户列表接口（完整网络请求示例）
+  Future<void> _fetchUserList() async {
+    setState(() => _loading = true);
+    try {
+      final resp = await UserApi.getUsers(
+        status: 'ACTIVE',
+        page: 0,
+        size: 10,
+        sortBy: 'createdAt',
+        sortDir: 'desc',
+      );
+      if (!mounted) return;
+      setState(() {
+        _userListResult = null;
+        if (resp.isSuccess && resp.data != null) {
+          _userListResult = resp.data;
+          _result = '用户列表请求成功：共 ${resp.data!.totalElements} 人';
+        } else {
+          _result = '请求失败：${resp.msg}（code: ${resp.code}）';
+        }
+      });
+    } catch (e, st) {
+      if (mounted) {
+        setState(() {
+          _userListResult = null;
+          _result = '请求异常：$e';
+        });
+      }
+      debugPrint('getUsers error: $e\n$st');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
   }
 
   Widget _buildPhoneLoginContent() {
@@ -356,6 +437,29 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
+
+            SizedBox(
+              width: 300,
+              height: 200,
+              child: Column(children: [
+                 Container(
+            margin: const EdgeInsets.fromLTRB(40, 0, 40, 12),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _loading ? null : () => _fetchUserList(),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('获取用户列表（示例请求）', style: TextStyle(fontSize: 13)),
+              ),
+            ),
+          ),
+          if (_userListResult != null) _buildUserListSection(),
+              ],),
+            )
           ],
         ),
       ),

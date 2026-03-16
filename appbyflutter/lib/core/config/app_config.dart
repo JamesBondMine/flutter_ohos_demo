@@ -5,8 +5,8 @@ import 'package:appbyflutter/core/network/app_http_client.dart';
 class AppConfig {
   AppConfig._();
 
-  /// API 基地址（不含末尾 /），如 https://api.example.com
-  static const String baseUrl = 'https://api.example.com';
+  /// API 基地址（不含末尾 /）
+  static const String baseUrl = 'http://8.155.13.7:8888';
 
   /// 易盾 Android AppKey（建议从环境变量或 flavor 读取，勿提交敏感值）
   static const String yidunAndroidAppKey = 'a5d8be959ecc4f4eb6485ac5765983ca';
