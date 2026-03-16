@@ -41,28 +41,31 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CommonBackButton(),
-              Expanded(
-                  child: ListView(
-                padding: EdgeInsets.all(0),
-                children: [
-                  const SizedBox(height: 40),
-                  // logo 100 * 100 圆形
-                  Center(
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: ClipOval(
-                        child: Image.asset(
-                          'asserts/images/logo.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+              const SizedBox(height: 40),
+              // logo 100 * 100 圆形
+              Center(
+                child: SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'asserts/images/logo.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                ),
+              ),
+              const SizedBox(height: 40),
+              // Expanded(
+              //     child:
+                   Column (
+                // padding: EdgeInsets.all(0),
+                children: [
                   _buildInput(),
                 ],
-              )),
+              ),
+              Spacer(),
+              // ),
               _buildProtocol()
             ],
           ),
@@ -144,64 +147,63 @@ class _LoginPageState extends State<LoginPage> {
 // 协议勾选
   Widget _buildProtocol() {
     return GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {},
-            child: Padding(
-              padding: EdgeInsetsGeometry.only(right: 24, bottom: 24),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _agreeProtocol = !_agreeProtocol;
-                      });
-                    },
-                    child: Padding(
-                      padding:
-                          EdgeInsetsGeometry.only(top: 3, right: 8, left: 24),
-                      child: Container(
-                        height: 40,
-                        alignment: Alignment.topCenter,
-                        child: Image.asset(
-                          _agreeProtocol
-                              ? 'asserts/images/sel_did.png'
-                              : 'asserts/images/sel_none.png',
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
+        behavior: HitTestBehavior.translucent,
+        onTap: () {},
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(right: 24, bottom: 24),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _agreeProtocol = !_agreeProtocol;
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsetsGeometry.only(top: 3, right: 8, left: 24),
+                  child: Container(
+                    height: 40,
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      _agreeProtocol
+                          ? 'asserts/images/sel_did.png'
+                          : 'asserts/images/sel_none.png',
+                      width: 20,
+                      height: 20,
                     ),
                   ),
-                  Expanded(
-                    child: RichText(
-                      text: const TextSpan(
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 12,
-                        ),
-                        children: [
-                          TextSpan(
-                              text: '我已阅读并同意',
-                              style: TextStyle(
-                                  fontSize: 20, color: GbsColors.textColor6)),
-                          TextSpan(
-                            text: '《用户注册协议》',
-                            style: TextStyle(
-                                fontSize: 20, color: GbsColors.primaryColor),
-                          ),
-                          TextSpan(text: ' '),
-                          TextSpan(
-                            text: '《隐私政策》',
-                            style: TextStyle(
-                                fontSize: 20, color: GbsColors.primaryColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ));
+              Expanded(
+                child: RichText(
+                  text: const TextSpan(
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 12,
+                    ),
+                    children: [
+                      TextSpan(
+                          text: '我已阅读并同意',
+                          style: TextStyle(
+                              fontSize: 20, color: GbsColors.textColor6)),
+                      TextSpan(
+                        text: '《用户注册协议》',
+                        style: TextStyle(
+                            fontSize: 20, color: GbsColors.primaryColor),
+                      ),
+                      TextSpan(text: ' '),
+                      TextSpan(
+                        text: '《隐私政策》',
+                        style: TextStyle(
+                            fontSize: 20, color: GbsColors.primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
