@@ -36,11 +36,18 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   cached_network_image: ^3.4.1
+
   file_picker_ohos: ^1.0.1
+
   get: ^4.6.6
+
   get_storage: ^2.1.1
+
   quickpass_yidun_flutter: ^1.7.3
+  
   modal_progress_hud_nsn: ^0.5.1
+
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +77,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
     - asserts/ios-light-config.json
     - asserts/android-light-config.json
+
+    - asserts/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

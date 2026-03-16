@@ -2,6 +2,7 @@ import 'package:appbyflutter/pages/auth/login_page.dart';
 import 'package:appbyflutter/pages/auth/display_mode_selection_page.dart';
 import 'package:appbyflutter/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:appbyflutter/controllers/auth_controller.dart';
@@ -22,16 +23,22 @@ class App extends StatelessWidget {
 
     return Obx(() {
       final textScale = displayController.textScaleFactor;
-      return GetMaterialApp(
-        title: AppConstants.appName,
-        theme: AppTheme.theme,
-        home: const AppEntry(),
+      return ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
         builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: textScale,
-            ),
-            child: child!,
+          return GetMaterialApp(
+            title: AppConstants.appName,
+            theme: AppTheme.theme,
+            home: const AppEntry(),
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaleFactor: textScale,
+                ),
+                child: child!,
+              );
+            },
           );
         },
       );
@@ -53,7 +60,7 @@ class AppEntry extends StatelessWidget {
         return const DisplayModeSelectionPage();
       }
       if (!authController.isLoggedIn.value) {
-        return const LoginPage();
+        return LoginPage();
       }
       return const HomePage();
     });
