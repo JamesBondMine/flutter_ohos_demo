@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:appbyflutter/core/network/user_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -204,13 +203,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _fetchUserList() async {
     setState(() => _loading = true);
     try {
-      final resp = await UserApi.getUsers(
-        status: 'ACTIVE',
-        page: 0,
-        size: 10,
-        sortBy: 'createdAt',
-        sortDir: 'desc',
-      );
+      final auth = Get.find<AuthController>();
+      final resp = await auth.fetchUsersTest();
       if (!mounted) return;
       setState(() {
         _userListResult = null;
@@ -481,19 +475,36 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _loginWithPhoneCode() {
+  Future<void> _loginWithPhoneCode() async {
     setState(() => _loading = true);
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      final auth = Get.find<AuthController>();
+      final resp = await auth.passwordLoginTest();
+
+      if (!mounted) return;
+      setState(() => _loading = false);
+
+      if (resp.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('登录成功：${resp.msg}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('登录失败：${resp.msg}（code: ${resp.code}）'),
+          ),
+        );
+      }
+    } catch (e, st) {
+      debugPrint('password login error: $e\n$st');
       if (mounted) {
         setState(() => _loading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  '登录请求: $phoneNumber / $_verifyCode，请对接后端接口')),
+          SnackBar(content: Text('请求异常：$e')),
         );
-        Get.find<AuthController>().setLoggedIn(true);
       }
-    });
+    }
   }
 
   void _isInitSuccess(VoidCallback success, VoidCallback failure) {

@@ -2,30 +2,38 @@ import 'package:appbyflutter/core/config/app_config.dart';
 import 'package:appbyflutter/core/network/api_response.dart';
 import 'package:appbyflutter/models/user_model.dart';
 
-/// 用户相关接口（示例：用户列表）
+/// 用户相关接口（示例：登录、用户列表）
 class UserApi {
   UserApi._();
 
   static const String _pathUsers = '/api/auth/users';
+  static const String _pathLogin = '/api/auth/login';
+
+  /// 账号密码登录
+  /// [body] 由上层（如 Controller）传入 Map，例如：
+  /// { 'usernameOrEmail': 'xxx', 'password': 'yyy' }
+  static Future<ApiResponse<dynamic>> passwordLogin(
+      Map<String, dynamic> body) async {
+    return AppConfig.httpClient.post<dynamic>(
+      _pathLogin,
+      body: body,
+    );
+  }
 
   /// 获取用户列表（分页）
-  /// 对应接口: GET /api/auth/users?status=ACTIVE&page=0&size=10&sortBy=createdAt&sortDir=desc
-  static Future<ApiResponse<UserListResult>> getUsers({
-    String status = 'ACTIVE',
-    int page = 0,
-    int size = 10,
-    String sortBy = 'createdAt',
-    String sortDir = 'desc',
-  }) async {
+  /// [query] 由上层传入，例如：
+  /// {
+  ///   'status': 'ACTIVE',
+  ///   'page': '0',
+  ///   'size': '10',
+  ///   'sortBy': 'createdAt',
+  ///   'sortDir': 'desc',
+  /// }
+  static Future<ApiResponse<UserListResult>> getUsers(
+      Map<String, String> query) async {
     return AppConfig.httpClient.get<UserListResult>(
       _pathUsers,
-      queryParameters: {
-        'status': status,
-        'page': page.toString(),
-        'size': size.toString(),
-        'sortBy': sortBy,
-        'sortDir': sortDir,
-      },
+      queryParameters: query,
       fromJsonData: (d) => UserListResult.fromJson(d as Map<String, dynamic>),
     );
   }
