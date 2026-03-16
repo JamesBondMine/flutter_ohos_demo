@@ -20,9 +20,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _agreeProtocol = false;
 
-    double get _scale => DisplayModeController.to.textScaleFactor;
-
-
   @override
   void dispose() {
     _phoneController.dispose();
@@ -37,52 +34,55 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-    final scale = _scale;
+    final displayModeController = Get.find<DisplayModeController>();
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CommonBackButton(),
-              const SizedBox(height: 40),
-              // logo 100 * 100 圆形
-              Center(
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: ClipOval(
-                    child: Image.asset(
-                      'asserts/images/logo.png',
-                      fit: BoxFit.cover,
+    return Obx(() {
+      // 关键：这里真正访问了 Rx 变量
+      final DisplayMode mode = displayModeController.mode.value;
+      final double scale = mode.textScaleFactor; // 比如 normal=1.0, elder=1.2
+
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CommonBackButton(),
+                SizedBox(height: 40 * scale),
+                // logo 100 * 100 圆形
+                Center(
+                  child: SizedBox(
+                    width: 100 * scale,
+                    height: 100 * scale,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'asserts/images/logo.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 40),
-                   Column (
-                children: [
-                  _buildInput(),
-                ],
-              ),
-              Spacer(),
-              // ),
-              _buildProtocol()
-            ],
+                SizedBox(height: 40 * scale),
+                Column(
+                  children: [
+                    _buildInput(scale),
+                  ],
+                ),
+                Spacer(),
+                // ),
+                _buildProtocol(scale)
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
     });
-    
   }
 
   // 账号部分
-  Widget _buildInput() {
+  Widget _buildInput(double scale) {
     return Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, top: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             onChanged: (_) => setState(() {}),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24 * scale),
 
           // 验证码输入 + 获取验证码按钮（都无边框、无背景）
           Row(
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
               }),
             ],
           ),
-          const SizedBox(height: 80),
+          SizedBox(height: 80 * scale),
           // 登录按钮，使用自定义按钮组件
           CustomButton(
             text: '登录',
@@ -152,12 +152,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 // 协议勾选
-  Widget _buildProtocol() {
+  Widget _buildProtocol(double scale) {
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {},
         child: Padding(
-          padding: EdgeInsetsGeometry.only(right: 24, bottom: 24),
+          padding:
+              EdgeInsetsGeometry.only(right: 24 * scale, bottom: 24 * scale),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -166,26 +167,25 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() {
                     _agreeProtocol = !_agreeProtocol;
                   });
-                  DisplayModeController.to.selectAndConfirm(_agreeProtocol ? DisplayMode.normal : DisplayMode.elder);
                 },
                 child: Padding(
                   padding: EdgeInsetsGeometry.only(top: 3, right: 8, left: 24),
                   child: Container(
-                    height: 40,
+                    height: 40 * scale,
                     alignment: Alignment.topCenter,
                     child: Image.asset(
                       _agreeProtocol
                           ? 'asserts/images/sel_did.png'
                           : 'asserts/images/sel_none.png',
-                      width: 20,
-                      height: 20,
+                      width: 20 * scale,
+                      height: 20 * scale,
                     ),
                   ),
                 ),
               ),
               Expanded(
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 12,
@@ -194,17 +194,20 @@ class _LoginPageState extends State<LoginPage> {
                       TextSpan(
                           text: '我已阅读并同意',
                           style: TextStyle(
-                              fontSize: 20, color: GbsColors.textColor6)),
+                              fontSize: 20 * scale,
+                              color: GbsColors.textColor6)),
                       TextSpan(
                         text: '《用户注册协议》',
                         style: TextStyle(
-                            fontSize: 20, color: GbsColors.primaryColor),
+                            fontSize: 20 * scale,
+                            color: GbsColors.primaryColor),
                       ),
                       TextSpan(text: ' '),
                       TextSpan(
                         text: '《隐私政策》',
                         style: TextStyle(
-                            fontSize: 20, color: GbsColors.primaryColor),
+                            fontSize: 20 * scale,
+                            color: GbsColors.primaryColor),
                       ),
                     ],
                   ),
