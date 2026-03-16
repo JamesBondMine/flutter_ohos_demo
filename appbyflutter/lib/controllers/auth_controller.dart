@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
@@ -25,6 +26,13 @@ class AuthController extends GetxController {
   final Rx<User?> currentUser = Rx<User?>(null);
 
   static final GetStorage _storage = GetStorage();
+
+  /// 短信验证码倒计时（0 表示未在倒计时）
+  final RxInt smsCountdown = 0.obs;
+
+  Timer? _smsTimer;
+
+  bool get isCountingDown => smsCountdown.value > 0;
 
   void _loadFromStorage() {
     final stored = _storage.read<bool>(_kStorageKeyIsLoggedIn);
@@ -64,6 +72,34 @@ class AuthController extends GetxController {
     setLoggedIn(false);
   }
 
+  /// 发送短信验证码并启动倒计时
+  /// [phone] 为要发送验证码的手机号
+  Future<void> sendSmsCode(String phone) async {
+    if (isCountingDown) return;
+
+    // 实际发送验证码请求
+    final resp = await UserApi.sendSmsCode(phone);
+    if (resp.isSuccess) {
+      _startSmsCountdown();
+    } else {
+      // 这里不直接依赖 BuildContext，交给上层做提示或使用 Get.snackbar
+      // 仅在失败时不启动倒计时
+    }
+  }
+
+  void _startSmsCountdown({int seconds = 60}) {
+    smsCountdown.value = seconds;
+    _smsTimer?.cancel();
+    _smsTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (smsCountdown.value <= 1) {
+        timer.cancel();
+        smsCountdown.value = 0;
+      } else {
+        smsCountdown.value = smsCountdown.value - 1;
+      }
+    });
+  }
+
   /// 示例：账号密码登录（用于联调 API，不依赖界面输入）
   /// 实际业务中可将 body 改为由页面输入拼装
   Future<ApiResponse<dynamic>> passwordLoginTest() async {
@@ -97,5 +133,11 @@ class AuthController extends GetxController {
       'sortBy': 'createdAt',
       'sortDir': 'desc',
     });
+  }
+
+  @override
+  void onClose() {
+    _smsTimer?.cancel();
+    super.onClose();
   }
 }
