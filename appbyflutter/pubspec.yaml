@@ -37,6 +37,8 @@ dependencies:
 
   cached_network_image: ^3.4.1
   file_picker_ohos: ^1.0.1
+  get: ^4.6.6
+  get_storage: ^2.1.1
   quickpass_yidun_flutter: ^1.7.3
   modal_progress_hud_nsn: ^0.5.1
 
