@@ -57,7 +57,7 @@ class AppEntry extends StatelessWidget {
 
     return Obx(() {
       if (!displayController.hasChosenDisplayMode.value) {
-        return const DisplayModeSelectionPage();
+        return DisplayModeSelectionPage();
       }
       if (!authController.isLoggedIn.value) {
         return LoginPage();

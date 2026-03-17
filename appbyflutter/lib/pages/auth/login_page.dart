@@ -2,6 +2,7 @@ import 'package:appbyflutter/controllers/auth_controller.dart';
 import 'package:appbyflutter/controllers/display_mode_controller.dart';
 import 'package:appbyflutter/core/theme/display_mode.dart';
 import 'package:appbyflutter/core/utils/gbs_color.dart';
+import 'package:appbyflutter/pages/auth/display_mode_selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:appbyflutter/widgets/common_back_button.dart';
 import 'package:appbyflutter/widgets/custom_button.dart';
@@ -20,6 +21,9 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _agreeProtocol = false;
 
+  // 登录按钮是否可用
+  bool _canLogin = false;
+
   @override
   void dispose() {
     _phoneController.dispose();
@@ -27,10 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  bool get _canLogin =>
-      _phoneController.text.isNotEmpty &&
-      _codeController.text.isNotEmpty &&
-      _agreeProtocol;
 
   @override
   Widget build(BuildContext context) {
@@ -49,29 +49,27 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CommonBackButton(),
-                SizedBox(height: 40 * scale),
-                // logo 100 * 100 圆形
+                // const CommonBackButton(),
+                SizedBox(height: 80 * scale),
                 Center(
                   child: SizedBox(
                     width: 100 * scale,
                     height: 100 * scale,
                     child: ClipOval(
                       child: Image.asset(
-                        'asserts/images/logo.png',
+                        'asserts/images/logo.webp',
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 40 * scale),
+                SizedBox(height: 40),
                 Column(
                   children: [
                     _buildInput(scale),
                   ],
                 ),
                 Spacer(),
-                // ),
                 _buildProtocol(scale)
               ],
             ),
@@ -90,15 +88,18 @@ class _LoginPageState extends State<LoginPage> {
           TextField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: '请输入手机号',
               border: InputBorder.none,
+              labelStyle: TextStyle(fontSize: 15*scale, color: GbsColors.textColor9),
               isDense: true,
             ),
-            onChanged: (_) => setState(() {}),
+            onChanged: (_) => setState(() {
+              _canLogin = _phoneController.text.isNotEmpty &&
+                  _codeController.text.isNotEmpty;
+            }),
           ),
           SizedBox(height: 24 * scale),
-
           // 验证码输入 + 获取验证码按钮（都无边框、无背景）
           Row(
             children: [
@@ -106,9 +107,10 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: _codeController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: '请输入验证码',
                     border: InputBorder.none,
+                    labelStyle: TextStyle(fontSize: 15*scale, color: GbsColors.textColor9),
                     isDense: true,
                   ),
                   onChanged: (_) => setState(() {}),
@@ -127,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       : () {
                           auth.sendSmsCode(_phoneController.text.trim());
                         },
-                  child: Text(text),
+                  child: Text(text, style: TextStyle(fontSize: 15*scale, color: GbsColors.primaryColor)),
                 );
               }),
             ],
@@ -136,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
           // 登录按钮，使用自定义按钮组件
           CustomButton(
             text: '登录',
+            fontSize: 15 * scale,
             enabled: _canLogin,
             onPressed: _canLogin
                 ? () {
@@ -158,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
         onTap: () {},
         child: Padding(
           padding:
-              EdgeInsetsGeometry.only(right: 24 * scale, bottom: 24 * scale),
+              EdgeInsetsGeometry.only(right: 24 * scale, bottom: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -167,18 +170,19 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() {
                     _agreeProtocol = !_agreeProtocol;
                   });
+                  Get.to(DisplayModeSelectionPage(isResetModel: true,));
                 },
                 child: Padding(
-                  padding: EdgeInsetsGeometry.only(top: 3, right: 8, left: 24),
+                  padding: EdgeInsetsGeometry.only(top: 2*scale, right: 8, left: 24),
                   child: Container(
                     height: 40 * scale,
                     alignment: Alignment.topCenter,
                     child: Image.asset(
                       _agreeProtocol
-                          ? 'asserts/images/sel_did.png'
-                          : 'asserts/images/sel_none.png',
-                      width: 20 * scale,
-                      height: 20 * scale,
+                          ? 'asserts/images/sel_did.webp'
+                          : 'asserts/images/sel_none.webp',
+                      width: 15 * scale,
+                      height: 15 * scale,
                     ),
                   ),
                 ),
@@ -187,26 +191,26 @@ class _LoginPageState extends State<LoginPage> {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: GbsColors.textColor3,
                       fontSize: 12,
                     ),
                     children: [
                       TextSpan(
                           text: '我已阅读并同意',
                           style: TextStyle(
-                              fontSize: 20 * scale,
+                              fontSize: 13 * scale,
                               color: GbsColors.textColor6)),
                       TextSpan(
                         text: '《用户注册协议》',
                         style: TextStyle(
-                            fontSize: 20 * scale,
+                            fontSize: 13 * scale,
                             color: GbsColors.primaryColor),
                       ),
                       TextSpan(text: ' '),
                       TextSpan(
                         text: '《隐私政策》',
                         style: TextStyle(
-                            fontSize: 20 * scale,
+                            fontSize: 13 * scale,
                             color: GbsColors.primaryColor),
                       ),
                     ],

@@ -24,7 +24,10 @@ enum OperationStatus {
 /// 首次启动（或未选过模式）时的「普通模式 / 长辈模式」选择页
 /// 选择后进入登录页或首页（由登录状态决定）
 class DisplayModeSelectionPage extends StatefulWidget {
-  const DisplayModeSelectionPage({super.key});
+  DisplayModeSelectionPage({super.key, this.isResetModel = false});
+
+  // 重新设置模式
+  bool isResetModel = false;
 
   @override
   State<StatefulWidget> createState() {
@@ -56,8 +59,10 @@ class DisplayModeSelectionPageState extends State<DisplayModeSelectionPage> {
   @override
   void initState() {
     super.initState();
-    _initAndCheckVerifyEnable();
+    if (!widget.isResetModel) {
+      _initAndCheckVerifyEnable();
     _eventChannel.receiveBroadcastStream().listen(_onData, onError: _onError);
+    }
   }
 
   @override
@@ -73,9 +78,13 @@ class DisplayModeSelectionPageState extends State<DisplayModeSelectionPage> {
               _ModeCard(
                 title: '普通模式',
                 subtitle: '标准字体，适合日常使用',
-                icon: 'model1.png',
+                icon: 'model1.webp',
                 onTap: () {
-                  controller.selectAndConfirm(DisplayMode.normal);
+                  controller.selectAndConfirm(DisplayMode.elder);
+                  if (widget.isResetModel) {
+                    Get.back();
+                    return;
+                  }
                   if (_yidunStatus == OperationStatus.success) {
                     // 启动一键登录
                     _quickLogin();
@@ -88,9 +97,13 @@ class DisplayModeSelectionPageState extends State<DisplayModeSelectionPage> {
               _ModeCard(
                 title: '长辈模式',
                 subtitle: '更大字体，阅读更轻松',
-                icon: 'model2.png',
+                icon: 'model2.webp',
                 onTap: () {
-                  controller.selectAndConfirm(DisplayMode.elder);
+                  controller.selectAndConfirm(DisplayMode.normal);
+                  if (widget.isResetModel) {
+                    Get.back();
+                    return;
+                  }
                   if (_yidunStatus == OperationStatus.success) {
                     // 启动一键登录
                     _quickLogin();
