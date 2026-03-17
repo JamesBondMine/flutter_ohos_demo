@@ -1,0 +1,18 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 480872" clip-path="url(#clip0_1_50)">
+<rect id="Rectangle 39611" width="24" height="24" rx="12" fill="#F6C944"/>
+<g id="Mask group">
+<mask id="mask0_1_50" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+<rect id="Rectangle 39612" width="24" height="24" rx="12" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1_50)">
+<path id="Vector" d="M17.2668 10.504C17.2668 13.576 14.9292 16.04 12.0147 16.04C9.10028 16.04 6.76265 13.576 6.76265 10.504C6.76265 7.432 9.10028 5 12.0147 5C14.9292 5 17.2668 7.432 17.2668 10.504ZM18.6937 25H4.8804C4.27323 25 4 24.52 4 23.88C4 20.072 6.64121 17.064 10.1628 17.064H13.4112C16.9328 17.064 19.9991 20.104 19.9991 23.912V23.848C20.0294 24.488 19.3008 24.968 18.6937 25Z" fill="black"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_1_50">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

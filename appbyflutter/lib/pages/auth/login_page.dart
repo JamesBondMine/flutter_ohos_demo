@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final displayModeController = Get.find<DisplayModeController>();
@@ -91,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
             decoration: InputDecoration(
               hintText: '请输入手机号',
               border: InputBorder.none,
-              labelStyle: TextStyle(fontSize: 15*scale, color: GbsColors.textColor9),
+              labelStyle:
+                  TextStyle(fontSize: 15 * scale, color: GbsColors.textColor9),
               isDense: true,
             ),
             onChanged: (_) => setState(() {
@@ -110,7 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     hintText: '请输入验证码',
                     border: InputBorder.none,
-                    labelStyle: TextStyle(fontSize: 15*scale, color: GbsColors.textColor9),
+                    labelStyle: TextStyle(
+                        fontSize: 15 * scale, color: GbsColors.textColor9),
                     isDense: true,
                   ),
                   onChanged: (_) => setState(() {}),
@@ -129,7 +130,9 @@ class _LoginPageState extends State<LoginPage> {
                       : () {
                           auth.sendSmsCode(_phoneController.text.trim());
                         },
-                  child: Text(text, style: TextStyle(fontSize: 15*scale, color: GbsColors.primaryColor)),
+                  child: Text(text,
+                      style: TextStyle(
+                          fontSize: 15 * scale, color: GbsColors.primaryColor)),
                 );
               }),
             ],
@@ -160,8 +163,7 @@ class _LoginPageState extends State<LoginPage> {
         behavior: HitTestBehavior.translucent,
         onTap: () {},
         child: Padding(
-          padding:
-              EdgeInsetsGeometry.only(right: 24 * scale, bottom: 20),
+          padding: EdgeInsets.only(right: 24 * scale, bottom: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -170,10 +172,12 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() {
                     _agreeProtocol = !_agreeProtocol;
                   });
-                  Get.to(DisplayModeSelectionPage(isResetModel: true,));
+                  Get.to(DisplayModeSelectionPage(
+                    isResetModel: true,
+                  ));
                 },
                 child: Padding(
-                  padding: EdgeInsetsGeometry.only(top: 2*scale, right: 8, left: 24),
+                  padding: EdgeInsets.only(top: 2 * scale, right: 8, left: 24),
                   child: Container(
                     height: 40 * scale,
                     alignment: Alignment.topCenter,

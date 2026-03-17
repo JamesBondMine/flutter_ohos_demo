@@ -1,0 +1,65 @@
+{
+  "name": "localvue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@cosmos-client/core": "0.46.0",
+    "@pefish/bch-bitcoinjs-lib": "5.2.0",
+    "@transitswap/js-sdk": "^1.0.2",
+    "axios": "^1.3.4",
+    "bignumber.js": "^9.1.1",
+    "bitcoinjs-lib": "5.2.0",
+    "bitcore-explorers": "^1.0.1",
+    "bitcore-lib": "^8.0.0",
+    "buffer": "^6.0.3",
+    "buffers": "^0.1.1",
+    "core-js": "^3.8.3",
+    "decimal": "^0.0.2",
+    "decimal.js": "^10.4.3",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "qs": "^6.11.0",
+    "querystring": "^0.2.1",
+    "short-uuid": "4.2.0",
+    "tron-station-sdk": "^0.1.3",
+    "tronweb": "^5.1.0",
+    "utils.js": "^1.0.1",
+    "vue": "^2.6.14",
+    "web3": "^1.8.2",
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "vue-template-compiler": "^2.6.14",
+    "webpack-cli": "^5.0.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
